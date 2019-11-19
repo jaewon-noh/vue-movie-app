@@ -4,46 +4,78 @@
 			Upcoming movies
 		</h1>
 		<ol class="list">
-			<up-coming-movie-item 
-				v-for="movie in movies"
-				:key="movie.id"
-				:movie-id="movie.id"
-				:title="movie.title"
-				:poster-path="movie.poster_path"
-				:image-config="imageConfig"
-			/>
+			<template v-if="isDataLoaded">
+				<up-coming-movies-item 
+					v-for="movie in movies"
+					:key="movie.id"
+					:movie-id="movie.id"
+					:title="movie.title"
+					:poster-path="movie.poster_path"
+					:image-config="imageConfig"
+					@open-feedback-toast="_openFeedbackToast"
+				/>
+			</template>
 		</ol>
+		<feedback-toast 
+			ref="feedbackToast"
+			:message="feedbackMessage"
+		/>
 	</div>
 </template>
 
 <script>
-import UpComingMovieItem from '../../organisms/upcoming-movies/up-coming-movie-item.vue';
+import {
+	mapState,
+	mapMutations,
+} from 'vuex';
+import UpComingMoviesItem from '../../organisms/upcoming-movies/up-coming-movies-item.vue';
+import FeedbackToast from '../../molecules/feedback-toast/feedback-toast.vue';
 
 export default {
 	name: 'UpcomingMovies',
 	components: {
-		UpComingMovieItem,
+		UpComingMoviesItem,
+		FeedbackToast,
 	},
 	props: {
 		movies: {
 			type: Array,
-			default() {
-				return [];
-			}
+			required: true,
 		},
 		genres: {
 			type: Array,
-			default() {
-				return [];
-			}
+			required: true,
 		},
 		imageConfig: {
 			type: Object,
-			default() {
-				return {};
-			}
+			required: true,
 		},
 	},
+	data() {
+		return {
+			feedbackMessage: ''
+		};
+	},
+	computed: {
+		...mapState('movieStore', [
+			'isDataLoaded',
+		]),
+	},
+	watch: {
+		isDataLoaded() {
+			this.changeIsDataLoaded(true);
+		},
+	},
+	methods: {
+		...mapMutations('movieStore', [
+			'changeIsDataLoaded'
+		]),
+		
+		_openFeedbackToast(e) {
+			this.feedbackMessage = e;
+			this.$refs.feedbackToast.open();
+		}
+	}
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
 	<li class="upcoming-movies-item">
 		<div class="movie-poster">
-			<img class="poster" :src="_getPosterImagePath()">
+			<img class="poster" :src="computedPosterImagePath">
 			<div 
 				class="add-btn"
 				@click="_addMovieToMyMovies"
@@ -19,7 +19,7 @@ import {
 } from 'vuex';
 
 export default {
-	name: 'UpComingMovieItem',
+	name: 'UpComingMoviesItem',
 	props: {
 		movieId: {
 			type: Number,
@@ -41,20 +41,21 @@ export default {
 	computed: {
 		...mapState('movieStore', [
 			'selectedMovieIds',
-		])
+		]),
+
+		computedPosterImagePath() {
+			const defaultSize = 'w185';
+			const imageName = this.posterPath;
+			const url = this.imageConfig.secure_base_url;
+			const posterSize = this.imageConfig.poster_sizes.find(s => s === defaultSize);
+
+			return `${url}${posterSize}/${imageName}`;
+		},
 	},
 	methods: {
 		...mapMutations('movieStore', [
 			'changeSelectedMovieIds',
 		]),
-
-		_getPosterImagePath(size = 'w185') {
-			const imageName = this.posterPath;
-			const url = this.imageConfig.secure_base_url;
-			const posterSize = this.imageConfig.poster_sizes.find(s => s === size);
-
-			return `${url}${posterSize}/${imageName}`;
-		},
 
 		_addMovieToMyMovies() {
 			const duplicatedMovie = this.selectedMovieIds.find(id => Number(id) === Number(this.movieId));
@@ -63,6 +64,7 @@ export default {
 				const newValue = [...this.selectedMovieIds];
 				newValue.push(this.movieId);
 				this.changeSelectedMovieIds(newValue);
+				this.$emit('open-feedback-toast', `Added ${this.title} to my list`);
 			}
 		},
 	}

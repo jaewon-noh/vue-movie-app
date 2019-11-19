@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import {
+	mapMutations,
+} from 'vuex';
 import CommonHeader from '../templates/common/common-header.vue';
 import MovieModel from '../../js/model/movie-model.js';
 
@@ -38,6 +41,9 @@ export default {
 		this._getAllDatas();
 	},
 	methods: {
+		...mapMutations('movieStore', [
+			'changeIsDataLoaded',
+		]),
 		async _getAllDatas() {
 			const [movies, genres, imageConfig] = await Promise.all([
 				this._getUpcomingMovies(),
@@ -48,6 +54,7 @@ export default {
 			this.movies = movies;
 			this.genres = genres;
 			this.imageConfig = imageConfig;
+			this.changeIsDataLoaded(true);
 		},
 
 		async _getUpcomingMovies() {

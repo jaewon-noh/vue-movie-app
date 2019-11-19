@@ -6,11 +6,15 @@ import MyMovies from '../../components/templates/my-movies/my-movies.vue';
 const routes = [
 	{
 		path: '/',
-		component: UpcomingMovies
+		components: {
+			UpcomingMovies
+		}
 	},
 	{
 		path: '/my',
-		component: MyMovies
+		components: {
+			MyMovies
+		}
 	},
 	{
 		path: '*',

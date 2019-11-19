@@ -38,16 +38,20 @@ export default {
 			required: true,
 		}
 	},
+	data() {
+		return {
+			defaultImageSize: 'w185',
+		};
+	},
 	computed: {
 		...mapState('movieStore', [
 			'selectedMovieIds',
 		]),
 
 		computedPosterImagePath() {
-			const defaultSize = 'w185';
 			const imageName = this.posterPath;
 			const url = this.imageConfig.secure_base_url;
-			const posterSize = this.imageConfig.poster_sizes.find(s => s === defaultSize);
+			const posterSize = this.imageConfig.poster_sizes.find(s => s === this.defaultImageSize);
 
 			return `${url}${posterSize}/${imageName}`;
 		},

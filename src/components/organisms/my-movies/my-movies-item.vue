@@ -93,6 +93,11 @@ export default {
 			required: true,
 		}
 	},
+	data() {
+		return {
+			defaultImageSize: 'w780',
+		};
+	},
 	computed: {
 		...mapState('movieStore', [
 			'selectedMovieIds',
@@ -102,10 +107,9 @@ export default {
 			return getReleaseDate({year, month, day});
 		},
 		computedBackDropPath() {
-			const defaultSize = 'w780';
 			const imageName = this.backdropPath;
 			const url = this.imageConfig.secure_base_url;
-			const backdropSize = this.imageConfig.backdrop_sizes.find(s => s === defaultSize);
+			const backdropSize = this.imageConfig.backdrop_sizes.find(s => s === this.defaultImageSize);
 
 			return `${url}${backdropSize}/${imageName}`;
 		}

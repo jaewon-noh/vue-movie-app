@@ -30,6 +30,13 @@ module.exports = {
 				}
 			},
 			{
+				test: /\.(js)$/,
+				loader: 'babel-loader',
+				exclude: file => (
+					/node_modules/.test(file)
+				)
+			},
+			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
 				options: {
@@ -45,16 +52,6 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.(js)$/,
-				loader: 'babel-loader',
-				options: {
-					rootMode: 'upward'
-				},
-				exclude: file => (
-					/node_modules/.test(file)
-				)
-			},
-			{
 				test: /\.html$/,
 				loader: 'html-loader',
 			},
@@ -68,14 +65,6 @@ module.exports = {
 						},
 					},
 					'css-loader',
-					{
-						loader: 'postcss-loader',
-						options: {
-							config: {
-								path: path.join(__dirname, '..', 'postcss.config.js'),
-							},
-						},
-					},
 					'less-loader',
 				]
 			},

@@ -101,20 +101,15 @@ module.exports = {
 		jest: true,
 	},
 	parserOptions: {
+		parser: "babel-eslint",
 		sourceType: "module",
 		ecmaVersion: 2018,
-	},
-	parser: "babel-eslint",
-	settings: {
-		react: {
-			pragma: "React",
-			version: "detect"
-		}
 	},
 	plugins: [
 		"vue",
 	],
 	extends: [
 		"eslint:recommended",
+		"plugin:vue/recommended"
 	]
 };
